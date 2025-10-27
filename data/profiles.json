@@ -1,7 +1,12 @@
 [
   {
+    "id": "7854b475-9a2e-4d3e-914a-2e574ee2ebd4",
+    "profileName": "TestFromDotnet",
+    "profileImage": "/uploads/1761551248494_test-upload.jpg"
+  },
+  {
     "id": "0607368d-a9f1-453f-a07a-c9c1cc1cf10b",
     "profileName": "test2",
-    "profileImage": "/uploads/1761548223501_תמונה של WhatsApp‏ 2024-07-18 בשעה 12.02.20_bc69fa61.jpg"
+    "profileImage": "/uploads/1761548223501_\u05EA\u05DE\u05D5\u05E0\u05D4 \u05E9\u05DC WhatsApp\u200F 2024-07-18 \u05D1\u05E9\u05E2\u05D4 12.02.20_bc69fa61.jpg"
   }
 ]
