@@ -18,7 +18,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const form = formidable({ multiples: false });
   form.parse(req as any, async (err, fields, files) => {
     if (err) return res.status(500).json({ error: "Form parse error" });
-    const profileName = (fields?.profileName as string) || "Unnamed";
+    const profileName = Array.isArray(fields.profileName)
+      ? fields.profileName[0]
+      : (fields.profileName ?? "Unnamed");
     let imageUrl: string | undefined = undefined;
 
     if (files?.profileImage) {

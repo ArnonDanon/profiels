@@ -17,8 +17,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const form = formidable({ multiples: false });
   form.parse(req as any, async (err, fields, files) => {
     if (err) return res.status(500).json({ error: "Form parse error" });
-    const id = (fields?.id as string) || "";
-    const profileName = (fields?.profileName as string) || undefined;
+    const id = Array.isArray(fields.id) ? fields.id[0] : (fields.id ?? "");
+    const profileName = Array.isArray(fields.profileName)
+      ? fields.profileName[0]
+      : (fields.profileName ?? undefined);
 
     const profiles = await readProfiles();
     const idx = profiles.findIndex((p) => p.id === id);
