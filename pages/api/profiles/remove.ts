@@ -1,26 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import fs from "fs/promises";
-import path from "path";
-import { readProfiles, writeProfiles } from "../../../lib/profiles";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).end();
-  const { id } = req.body || {};
-  if (!id) return res.status(400).json({ error: "Missing id" });
+// These Next.js API routes have been migrated to the external .NET API.
+// Keep the route in place but return 410 to make the migration explicit.
 
-  const profiles = await readProfiles();
-  const idx = profiles.findIndex((p) => p.id === id);
-  if (idx === -1) return res.status(404).json({ error: "Not found" });
-
-  const [removed] = profiles.splice(idx, 1);
-  if (removed.profileImage) {
-    const imgPath = path.join(process.cwd(), "public", removed.profileImage.replace(/^\//, ""));
-    try {
-      await fs.unlink(imgPath);
-    } catch (e) {
-      // ignore missing file
-    }
-  }
-  await writeProfiles(profiles);
-  res.json({ ok: true });
+export default function handler(_req: NextApiRequest, res: NextApiResponse) {
+  res.status(410).json({ error: "migrated", message: "This endpoint was migrated to the external .NET API. Use NEXT_PUBLIC_API_BASE + /api/profiles/remove" });
 }

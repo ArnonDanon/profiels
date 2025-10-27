@@ -7,6 +7,10 @@ type Profile = {
 };
 
 export default function Home() {
+  // Use NEXT_PUBLIC_API_BASE to call the external API (e.g. http://localhost:5001).
+  // Leave empty to keep same-origin behavior.
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
+
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [name, setName] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -15,7 +19,7 @@ export default function Home() {
   const [editFile, setEditFile] = useState<File | null>(null);
 
   async function load() {
-    const res = await fetch("/api/profiles/list");
+    const res = await fetch(`${API_BASE}/api/profiles/list`);
     const data = await res.json();
     setProfiles(data);
   }
@@ -29,7 +33,7 @@ export default function Home() {
     const fd = new FormData();
     fd.append("profileName", name);
     if (file) fd.append("profileImage", file);
-    const res = await fetch("/api/profiles/add", { method: "POST", body: fd });
+  const res = await fetch(`${API_BASE}/api/profiles/add`, { method: "POST", body: fd });
     const newProfile = await res.json();
     setProfiles((p) => [newProfile, ...p]);
     setName("");
@@ -38,7 +42,7 @@ export default function Home() {
   }
 
   async function handleDelete(id: string) {
-    await fetch("/api/profiles/remove", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    await fetch(`${API_BASE}/api/profiles/remove`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
     setProfiles((p) => p.filter((x) => x.id !== id));
   }
 
@@ -55,7 +59,7 @@ export default function Home() {
     fd.append("id", editingId);
     fd.append("profileName", editName);
     if (editFile) fd.append("profileImage", editFile);
-    const res = await fetch("/api/profiles/edit", { method: "POST", body: fd });
+  const res = await fetch(`${API_BASE}/api/profiles/edit`, { method: "POST", body: fd });
     const updated = await res.json();
     setProfiles((p) => p.map((it) => (it.id === updated.id ? updated : it)));
     setEditingId(null);
